@@ -1,5 +1,5 @@
-<%#= form_tag Pay2go.service_url, method: :post do %>
-<%= form_tag "https://capi.pay2go.com/MPG/mpg_gateway", method: :post, id: "pay2go_form" do %>
+<%= form_tag Pay2go.service_url, method: :post, id: "pay2go_form" do %>
+<%#= form_tag "https://capi.pay2go.com/MPG/mpg_gateway", method: :post, id: "pay2go_form" do %>
   <%= hidden_field_tag "MerchantID",      Pay2go.merchant_id %>
   <%= hidden_field_tag "HashKey",         Pay2go.hash_key %>
   <%= hidden_field_tag "HashIV",          Pay2go.hash_iv %>
