@@ -9,7 +9,7 @@
       <% if @rent.unpaid? %>
         $("form#pay2go_form").submit()
       <% else %>
-        window.location.assign('<%= "#{result_rent_path(@rent)}" %>')
+        window.location.assign('<%= "#{result_rent_path(@rent.token)}" %>')
       <% end %>
     }, 1500)
   })
