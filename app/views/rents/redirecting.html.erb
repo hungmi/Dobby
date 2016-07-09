@@ -1,0 +1,16 @@
+<h3>Redirecting to third party payment...</h3>
+<div class="hidden">
+  <%= render "partials/pay_button", order: @rent %>
+</div>
+
+<%= javascript_tag do %>
+  $(document).on("page:change", function(){
+    setTimeout(function(){
+      <% if @rent.unpaid? %>
+        $("form#pay2go_form").submit()
+      <% else %>
+        window.location.assign('<%= "#{result_rent_path(@rent)}" %>')
+      <% end %>
+    }, 1500)
+  })
+<% end %>

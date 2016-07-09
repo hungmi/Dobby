@@ -1,0 +1,16 @@
+default: &default
+  timeout: 5000
+  adapter: postgresql
+  encoding: utf8
+  database: dobby_dev
+  pool: 5
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  database: dobby_test
+
+production:
+  <<: *default

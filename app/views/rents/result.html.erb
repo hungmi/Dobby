@@ -1,0 +1,26 @@
+<% if @rent.paid? %>
+  <h3>Success <span style="color: green;">&#10004</span></h3>
+  <!-- <p>
+    Your receipt number is <strong><%#= @rent.receipt_num %></strong><br>
+    Please remember it at least 1 month.
+  </p> -->
+  <p>
+    You will get an email including this payment info.<br>
+    Please keep it at least 3 months.
+  </p>
+  <p>
+    And this is your receipt number:
+    <h4><%= @rent.payment_infos.first.merchant_order_no %></h4>
+    in case you didn't get the mail.
+  </p>
+  <%= link_to "Back", root_path, class: "btn btn-default" %>
+<% else %>
+  <% case params[:status] %>
+  <% when "TRA10016" %>
+    <h3>Card Authentication Failed</h3>
+  <% else %> 
+    <h3>Please try again later</h3>
+  <% end %>
+  <%= link_to "Try again", redirecting_rent_path(@rent.token), class: "btn btn-default" %>
+  <%= link_to "Edit", edit_rent_path(@rent.token), class: "btn btn-link" %>
+<% end %>

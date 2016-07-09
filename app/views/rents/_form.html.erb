@@ -1,0 +1,93 @@
+<div id="new_rent_form_wrapper">
+<%= form_for(@rent) do |f| %>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= f.label :total, "NT$" %><br>
+      <%= f.text_field :total, pattern: "[0-9]*" %>
+    </div>
+  </div>
+  <%= f.hidden_field :payment_method, value: "Credit Card" %>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= f.label :house_name do %>
+        House name (<%= link_to "what's this?", "https://m.me/zuker.community" %>)
+      <% end %><br>
+      <%= f.text_field :house_name %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= f.label :room_name, "Bed no. (ex: B3-2)" %><br>
+      <%= f.text_field :room_name %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-7">
+      <p style="margin-top: 10px; white-space: nowrap;">*All fields are required.</p>
+    </div>
+    <div class="col-xs-5">
+      <div class="text-right">
+        <%= f.button "checkout", data: { disable_with: "processing..." } %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <%= image_tag "visa.svg", width: "50px", style: "opacity: 0.8;" %>
+      <%= image_tag "master.svg", width: "50px", style: "opacity: 0.7;" %>
+      <%= image_tag "jcb.png", width: "50px", style: "opacity: 0.7;" %>
+    </div>
+  </div>
+<% end %>
+</div>
+
+<script type="text/javascript">
+  // $(document).on("page:change", function(){
+  //   $("#rent_total").focus();
+  //   $("input:not([type='hidden'])").each(function(){
+  //     $(this).val(Math.round(Math.random()*1000))
+  //   })
+  // });
+  var $form = $("form[class*='_rent']")
+  $form.on("submit", function(e){
+    // reset errors
+    $("label.error").removeClass("error")
+    $("span.error").remove()
+    e.preventDefault();
+    $.ajax({
+      url: $form.attr("action"),
+      method: $form.attr("method"),
+      dataType: "json",
+      data: $form.serialize(),
+    }).done(function( data, textStatus, jqXHR ){
+      console.log("success")
+      setTimeout(function(){
+        window.location.assign(data.url)
+      }, 500)
+    }).fail(function(data){
+      //window.data = data
+      $.rails.enableFormElements($($.rails.formSubmitSelector));
+      error_hash = data.responseJSON
+      if (!!error_hash) {
+        Object.keys(error_hash).forEach(function(attr_name, index){
+          //console.log(error_hash[attr_name])
+          $error_input = $("input#rent_" + attr_name)
+          $error_input.css("border-color","red")
+          $error_input.after("<span class='error error-hint' style='color: red;'>" + error_hash[attr_name] + "</span>")
+          $error_input.siblings("label").addClass("error")
+        })
+      }
+    })
+  });
+  $("input").on("focus", function(){
+    $label = $(this).siblings("label")
+    $label.addClass("active").removeClass("error");
+    $(this).css("border-color","#000").removeClass("error");
+    if ($(this).siblings("span.error").length > 0) {
+      $(this).siblings("span.error").remove()
+    }
+  }).on("focusout", function(){
+    $(this).siblings("label").removeClass("active");
+    $(this).removeAttr("style");
+  })
+</script>
