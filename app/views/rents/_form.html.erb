@@ -42,12 +42,13 @@
 </div>
 
 <script type="text/javascript">
-  // $(document).on("page:change", function(){
-  //   $("#rent_total").focus();
-  //   $("input:not([type='hidden'])").each(function(){
-  //     $(this).val(Math.round(Math.random()*1000))
-  //   })
-  // });
+  $(document).on("page:change", function(){
+    $("#rent_total").focus();
+    // auto fill for quick test
+    // $("input:not([type='hidden'])").each(function(){
+    //   $(this).val(Math.round(Math.random()*1000))
+    // })
+  });
   var $form = $("form[class*='_rent']")
   $form.on("submit", function(e){
     // reset errors
